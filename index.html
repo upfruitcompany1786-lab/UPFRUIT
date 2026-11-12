@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#063b19"><meta name="description" content="UP Fruit Company Business App">
-  <link rel="manifest" href="/UPFRUIT/manifest.json"><link rel="apple-touch-icon" href="/UPFRUIT/icons/apple-touch-icon.png"><link rel="icon" href="/UPFRUIT/favicon.ico">
+  <link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="/UPFRUIT/icons/apple-touch-icon.png"><link rel="icon" href="/UPFRUIT/favicon.ico">
   <title>UP Fruit Company</title>
   <style>
     *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,"Noto Sans Devanagari",sans-serif;background:linear-gradient(145deg,#032b12,#0b5928);color:#fff;display:grid;place-items:center;padding:22px}
@@ -32,6 +32,23 @@
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('installBtn');b.hidden=false;b.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;b.hidden=true;},{once:true});});
     window.addEventListener('appinstalled',()=>{statusEl.textContent='ऐप सफलतापूर्वक Install हो गया।';});
-    if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/UPFRUIT/sw.js', {scope: '/UPFRUIT/'}).catch(()=>{statusEl.textContent='Offline shell registration नहीं हो पाया।';}));}
-  </script>
+    
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', {
+      scope: './'
+    })
+    .then(registration => {
+      console.log('UP FRUIT COMPANY PWA Registered:', registration.scope);
+    })
+    .catch(error => {
+      console.error('Service Worker Registration Failed:', error);
+
+      if (statusEl) {
+        statusEl.textContent = 'Offline shell registration नहीं हो पाया।';
+      }
+    });
+  });
+}
+</script>
 </body></html>
